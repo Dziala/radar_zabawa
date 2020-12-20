@@ -3,6 +3,6 @@ require('./images/logo.png')
 require('./images/radar_legend.png')
 require('./gtm.js')
 
-const GoogleSheetInput = require('./util/factory')
+const SheetInput = require('./util/factory')
 
-GoogleSheetInput().build()
+SheetInput().build()

@@ -197,7 +197,7 @@ const FileName = function (url) {
   return url
 }
 
-const GoogleSheetInput = function () {
+const SheetInput = function () {
   var self = {}
   var sheet
 
@@ -206,6 +206,7 @@ const GoogleSheetInput = function () {
     var queryString = window.location.href.match(/sheetId(.*)/)
     var queryParams = queryString ? QueryParams(queryString[0]) : {}
 
+    // check if the source was set
     if (domainName && queryParams.sheetId.endsWith('csv')) {
       sheet = CSVDocument(queryParams.sheetId)
       sheet.init().build()
@@ -237,7 +238,7 @@ const GoogleSheetInput = function () {
 }
 
 function setDocumentTitle () {
-  document.title = 'Build your own Radar'
+  document.title = 'Build your own Radar - test'
 }
 
 function plotLoading (content) {
@@ -395,4 +396,4 @@ function plotUnauthorizedErrorMessage () {
   })
 }
 
-module.exports = GoogleSheetInput
+module.exports = SheetInput
