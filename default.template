@@ -4,6 +4,7 @@ server {
   location / {
     root /opt/build-your-own-radar;
     index index.html;
+    Radar_test1.csv Radar_test1.csv;
   }
 
   # custom error page for 404 errors

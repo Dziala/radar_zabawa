@@ -15,13 +15,13 @@ const Quadrant = require('../models/quadrant')
 const Ring = require('../models/ring')
 const Blip = require('../models/blip')
 const GraphingRadar = require('../graphing/radar')
-const QueryParams = require('./queryParamProcessor')
+//const QueryParams = require('./queryParamProcessor')
 const MalformedDataError = require('../exceptions/malformedDataError')
 const SheetNotFoundError = require('../exceptions/sheetNotFoundError')
 const ContentValidator = require('./contentValidator')
-const Sheet = require('./sheet')
+//const Sheet = require('./sheet')
 const ExceptionMessages = require('./exceptionMessages')
-const GoogleAuth = require('./googleAuth')
+//const GoogleAuth = require('./googleAuth')
 
 const plotRadar = function (title, blips, currentRadarName, alternativeRadars) {
   if (title.endsWith('.csv')) {
@@ -69,7 +69,7 @@ const plotRadar = function (title, blips, currentRadarName, alternativeRadars) {
   new GraphingRadar(size, radar).init().plot()
 }
 
-const GoogleSheet = function (sheetReference, sheetName) {
+/*const GoogleSheet = function (sheetReference, sheetName) {
   var self = {}
 
   self.build = function () {
@@ -150,13 +150,17 @@ const GoogleSheet = function (sheetReference, sheetName) {
   }
 
   return self
-}
+}*/
 
 const CSVDocument = function (url) {
   var self = {}
 
   self.build = function () {
-    d3.csv(url).then(createBlips)
+    try {
+      d3.csv(url).then(createBlips) //get the blips from the file and plot the Radar. Function csv returns data
+    } catch (error) {
+      plotErrorMessage(exception)
+    }
   }
 
   var createBlips = function (data) {
@@ -173,19 +177,19 @@ const CSVDocument = function (url) {
     }
   }
 
-  self.init = function () {
-    plotLoading()
+  /*self.init = function () {
+    //plotLoading()
     return self
-  }
+  }*/
 
   return self
 }
 
-const DomainName = function (url) {
+/*const DomainName = function (url) {
   var search = /.+:\/\/([^\\/]+)/
   var match = search.exec(decodeURIComponent(url.replace(/\+/g, ' ')))
   return match == null ? null : match[1]
-}
+}*/
 
 const FileName = function (url) {
   var search = /([^\\/]+)$/
@@ -202,15 +206,18 @@ const SheetInput = function () {
   var sheet
 
   self.build = function () {
-    var domainName = DomainName(window.location.search.substring(1))
-    var queryString = window.location.href.match(/sheetId(.*)/)
-    var queryParams = queryString ? QueryParams(queryString[0]) : {}
+    //var domainName = DomainName(window.location.search.substring(1))
+    //var queryString = window.location.href.match(/sheetId(.*)/)
+    //var queryParams = queryString ? QueryParams(queryString[0]) : {}
 
     // check if the source was set
-    if (domainName && queryParams.sheetId.endsWith('csv')) {
-      sheet = CSVDocument(queryParams.sheetId)
-      sheet.init().build()
-    } else if (domainName && domainName.endsWith('google.com') && queryParams.sheetId) {
+    //if (domainName && queryParams.sheetId.endsWith('csv')) {
+      //sheet = CSVDocument(queryParams.sheetId)
+      // //NASBarta/Download
+      //sheet = CSVDocument("//NASBarta/Download/Radar_test1.csv")
+      sheet = CSVDocument("https://raw.githubusercontent.com/Dziala/radar_zabawa/master/Radar_test1.csv")
+      sheet.build()
+    /*} else if (domainName && domainName.endsWith('google.com') && queryParams.sheetId) {
       sheet = GoogleSheet(queryParams.sheetId, queryParams.sheetName)
       console.log(queryParams.sheetName)
 
@@ -231,17 +238,17 @@ const SheetInput = function () {
       plotForm(content)
 
       plotFooter(content)
-    }
+    }*/
   }
 
   return self
 }
 
 function setDocumentTitle () {
-  document.title = 'Build your own Radar - test'
-}
+  document.title = 'Build your own Radar - test testów'
+} 
 
-function plotLoading (content) {
+/*function plotLoading (content) {
   content = d3.select('body')
     .append('div')
     .attr('class', 'loading')
@@ -252,10 +259,10 @@ function plotLoading (content) {
 
   plotLogo(content)
 
-  var bannerText = '<h1>Building your radar...</h1><p>Your Technology Radar will be available in just a few seconds</p>'
+  var bannerText = '<h1>Building your radar :D ...</h1><p>Your Technology Radar will be available in just a few seconds</p>'
   plotBanner(content, bannerText)
   plotFooter(content)
-}
+}*/
 
 function plotLogo (content) {
   content.append('div')
@@ -282,7 +289,7 @@ function plotBanner (content, text) {
     .html(text)
 }
 
-function plotForm (content) {
+/*function plotForm (content) {
   content.append('div')
     .attr('class', 'input-sheet__form')
     .append('p')
@@ -304,7 +311,7 @@ function plotForm (content) {
     .text('Build my radar')
 
   form.append('p').html("<a href='https://www.thoughtworks.com/radar/how-to-byor'>Need help?</a>")
-}
+}*/
 
 function plotErrorMessage (exception) {
   var message = 'Oops! It seems like there are some problems with loading your data. '
@@ -350,7 +357,7 @@ function plotErrorMessage (exception) {
   plotFooter(content)
 }
 
-function plotUnauthorizedErrorMessage () {
+/*function plotUnauthorizedErrorMessage () {
   var content = d3.select('body')
     .append('div')
     .attr('class', 'input-sheet')
@@ -394,6 +401,6 @@ function plotUnauthorizedErrorMessage () {
       content.remove()
     })
   })
-}
+}*/
 
 module.exports = SheetInput

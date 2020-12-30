@@ -5,6 +5,8 @@ const path = require('path')
 const buildPath = path.join(__dirname, './dist')
 const args = require('yargs').argv
 
+//const CopyPlugin = require("copy-webpack-plugin");
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const postcssPresetEnv = require('postcss-preset-env')
@@ -68,7 +70,7 @@ module.exports = {
 
   output: {
     path: buildPath,
-    publicPath: '/',
+    publicPath: buildPath,//'/',
     filename: '[name].[hash].js'
   },
 
@@ -110,6 +112,13 @@ module.exports = {
   },
 
   plugins: plugins,
+/*   [
+    new CopyPlugin({
+      patterns: [
+        { from: "assets", to: "assets" },
+      ],
+    }),
+  ],*/
 
   devtool: devtool,
 
